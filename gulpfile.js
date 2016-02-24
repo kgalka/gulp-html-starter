@@ -41,8 +41,7 @@ gulp.task('sass', function () {
  */
 
 gulp.task('scripts', function() {
-    gulp.src(['./src/js/jquery-2.1.3.min.js', 
-              './src/js/modernizr.custom.js', 
+    gulp.src(['./src/js/jquery-2.2.1.js', 
               './src/js/main.js'])
         .pipe(concat('main.js'))
         .pipe(gulp.dest('./dist/js'))
