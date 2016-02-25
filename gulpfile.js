@@ -1,11 +1,12 @@
-var gulp = require('gulp');
-var sass = require('gulp-ruby-sass');
-var rename = require("gulp-rename");
-var uglify = require('gulp-uglify');
-var browserSync = require('browser-sync').create();
-var sourcemaps = require('gulp-sourcemaps');
-var clean = require('gulp-clean');
-var concat = require('gulp-concat');
+var gulp         = require('gulp'),
+    sass         = require('gulp-ruby-sass'),
+    rename       = require("gulp-rename"),
+    uglify       = require('gulp-uglify'),
+    browserSync  = require('browser-sync').create(),
+    sourcemaps   = require('gulp-sourcemaps'),
+    clean        = require('gulp-clean'),
+    concat       = require('gulp-concat'),
+    autoprefixer = require('gulp-autoprefixer');
 
 // Static Server + watching scss/html files
 gulp.task('serve', ['files', 'sass', 'scripts'], function() {
@@ -28,6 +29,10 @@ gulp.task('sass', function () {
         .on('error', function (err) {
             console.error('Error!', err.message);
         })
+        .pipe(autoprefixer({
+            browsers: ['last 2 versions'],
+            cascade: false
+        }))
         .pipe(sourcemaps.write('./', {
             includeContent: false,
             sourceRoot: './src/sass'
