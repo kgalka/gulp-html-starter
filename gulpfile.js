@@ -58,6 +58,8 @@ gulp.task('scripts', function() {
 gulp.task('files', function() {
     gulp.src('./src/*.*')
         .pipe(gulp.dest('./dist/'));   
+    gulp.src('./src/images/**/*')
+        .pipe(gulp.dest('./dist/images'));         
 });
 
 /**
