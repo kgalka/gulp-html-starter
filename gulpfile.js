@@ -49,7 +49,12 @@ gulp.task('sass', function () {
  */
 gulp.task('scripts', function() {
     gulp.src(['./src/js/main.js'])
-        .pipe(include())
+        .pipe(sourcemaps.init())
+            .pipe(include())
+        .pipe(sourcemaps.write('./', {
+            includeContent: false,
+            sourceRoot: './src/js'
+        }))
         .pipe(gulp.dest('./dist/js'))
 });
 
@@ -60,7 +65,9 @@ gulp.task('files', function() {
     gulp.src('./src/*.*')
         .pipe(gulp.dest('./dist/'));   
     gulp.src('./src/images/**/*')
-        .pipe(gulp.dest('./dist/images'));         
+        .pipe(gulp.dest('./dist/images'));    
+    gulp.src('./src/resources/**/*')
+        .pipe(gulp.dest('./dist/resources'));          
 });
 
 /**

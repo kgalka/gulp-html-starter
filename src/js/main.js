@@ -1,4 +1,4 @@
-/* Some magical code */
+//=require ../../bower_components/jquery/dist/jquery.js 
 
 jQuery(document).ready(function($){
 
