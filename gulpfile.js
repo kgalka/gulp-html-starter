@@ -1,3 +1,5 @@
+'use strict';
+
 var gulp         = require('gulp'),
     sass         = require('gulp-ruby-sass'),
     rename       = require("gulp-rename"),
@@ -5,8 +7,8 @@ var gulp         = require('gulp'),
     browserSync  = require('browser-sync').create(),
     sourcemaps   = require('gulp-sourcemaps'),
     clean        = require('gulp-clean'),
-    concat       = require('gulp-concat'),
-    autoprefixer = require('gulp-autoprefixer');
+    autoprefixer = require('gulp-autoprefixer'),
+    include      = require('gulp-include');
 
 // Static Server + watching scss/html files
 gulp.task('serve', ['files', 'sass', 'scripts'], function() {
@@ -42,13 +44,11 @@ gulp.task('sass', function () {
 });
 
 /**
- * Concatenate js scripts
+ * Add js scripts
  */
-
 gulp.task('scripts', function() {
-    gulp.src(['./src/js/jquery-2.2.1.js', 
-              './src/js/main.js'])
-        .pipe(concat('main.js'))
+    gulp.src(['./src/js/main.js'])
+        .pipe(include())
         .pipe(gulp.dest('./dist/js'))
 });
 
