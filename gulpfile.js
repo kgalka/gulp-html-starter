@@ -10,7 +10,9 @@ var gulp         = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     include      = require('gulp-include');
 
-// Static Server + watching scss/html files
+/**
+ * Static Server + watching scss/html files
+ */
 gulp.task('serve', ['files', 'sass', 'scripts'], function() {
 
     browserSync.init({
@@ -19,7 +21,6 @@ gulp.task('serve', ['files', 'sass', 'scripts'], function() {
 
     gulp.watch("./src/sass/*.scss", ['sass']);
     gulp.watch("./src/sass/views/*.scss", ['sass']);
-    gulp.watch("./src/sass/organisms/*.scss", ['sass']);
     gulp.watch("./src/*.html").on('change', browserSync.reload);
 });
 

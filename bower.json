@@ -1,12 +1,5 @@
 {
   "name": "MyProject",
-  "description": "",
-  "main": "",
-  "authors": [
-    "kacpergalka <kacper.galka@gmail.com>"
-  ],
-  "license": "MIT",
-  "homepage": "https://github.com/kgalka/gulp-html-starter",
   "moduleType": [],
   "ignore": [
     "**/.*",
