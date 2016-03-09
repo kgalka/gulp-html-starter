@@ -1,20 +1,17 @@
-/* 
-// code by mill studio
-*/
+// === Use bower to add for third-party CSS. Example below.  === //
 
+// @import '../../bower_components/slick-carousel/slick/slick.scss'; // slick.js
 
-// import setup
-@import '_reset';
-@import '_mixins';
-@import '_colors';
-@import '_breakpoints';
+// === The modules directory is reserved for Sass code that doesn't cause Sass to actually output CSS. === //
+// === Things like mixin declarations, functions, and variables.									   === //
 
+@import 'modules/mixins';
+@import 'modules/breakpoints';
+@import 'modules/variables';
 
-// import views
-@import 'views/_home.scss';
+// === Common styles are stored in sass main directory. === //
+@import 'reset';
+@import 'base';
 
-
-// general 
-
-
-// common classes
+// === The partials directory is where all the parts of actual styling is stored. === //
+@import 'partials/home';
