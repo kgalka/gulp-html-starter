@@ -5,13 +5,13 @@
 // === The modules directory is reserved for Sass code that doesn't cause Sass to actually output CSS. === //
 // === Things like mixin declarations, functions, and variables.									   === //
 
-@import 'modules/mixins';
-@import 'modules/breakpoints';
-@import 'modules/variables';
+@import 'base/reset';
+@import 'base/mixins';
+@import 'base/breakpoints';
+@import 'base/variables';
 
-// === Common styles are stored in sass main directory. === //
-@import 'reset';
-@import 'base';
+// === Common styles are stored in sass modules directory. === //
+@import 'modules/buttons';
 
-// === The partials directory is where all the parts of actual styling is stored. === //
-@import 'partials/home';
+// === The layouts directory is where all the parts of actual styling is stored. === //
+@import 'layouts/home';

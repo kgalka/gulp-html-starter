@@ -7,7 +7,7 @@ jQuery(document).ready(function($){
         },
 
         customFunction: function() {
-            console.log('milllove');
+            console.log('test');
         }
 
     };
