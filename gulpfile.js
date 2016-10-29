@@ -2,32 +2,31 @@
 
 var gulp         = require('gulp'),
     sass         = require('gulp-ruby-sass'),
-    rename       = require("gulp-rename"),
+    cleanCSS     = require('gulp-clean-css'),
+    htmlmin      = require('gulp-htmlmin'),
+    rename       = require('gulp-rename'),
     uglify       = require('gulp-uglify'),
     browserSync  = require('browser-sync').create(),
     sourcemaps   = require('gulp-sourcemaps'),
     clean        = require('gulp-clean'),
     autoprefixer = require('gulp-autoprefixer'),
     include      = require('gulp-include'),
-    fileinclude  = require('gulp-file-include');
-
+    fileinclude  = require('gulp-file-include'),
+    gutil        = require('gulp-util'),
+    ftp          = require('vinyl-ftp');
 /**
  * Static Server + watching scss/html files
  */
 gulp.task('serve', ['files', 'sass', 'scripts'], function() {
-
     browserSync.init({
-        server: "./dist/"
+        server: {
+            baseDir: 'dist'
+        }
     });
-
     gulp.watch("./src/sass/**/*", ['sass']);
-    // gulp.watch("./src/sass/blocks/*.scss", ['sass']);
-    // gulp.watch("./src/js/*.js", ['scripts']);
-    gulp.watch("./src/**/*", ['files', 'sass', 'scripts']);
-    // gulp.watch("./src/images/**/*", ['files']);
-    // gulp.watch("./src/photos/**/*", ['files']);
-    gulp.watch("./src/*.html").on('change', browserSync.reload);
-    gulp.watch("./src/partials/*.html").on('change', browserSync.reload);
+    gulp.watch(['./images/*', './photos/*', './fonts/*', './src/*.html', './src/partials/*.html'], ['files']);
+    gulp.watch('./src/js/*', ['scripts']);
+    gulp.watch(['dist/*.html', 'dist/js/*.js']).on('change', browserSync.reload);
 });
 
 /**
@@ -74,12 +73,38 @@ gulp.task('files', function() {
           basepath: '@file'
         }))
         .pipe(gulp.dest('./dist/'));   
+
     gulp.src('./src/images/**/*')
-        .pipe(gulp.dest('./dist/images'));    
+        .pipe(gulp.dest('./dist/images'));   
+
     gulp.src('./src/photos/**/*')
-        .pipe(gulp.dest('./dist/photos'));          
+        .pipe(gulp.dest('./dist/photos'));     
+
     gulp.src('./src/fonts/**/*')
-        .pipe(gulp.dest('./dist/fonts'));            
+        .pipe(gulp.dest('./dist/fonts'));   
+
+    gulp.src('./src/.htaccess')
+        .pipe(gulp.dest('./dist/'));                
+});
+
+gulp.task('compress', function () {
+    gulp.src('dist/js/*.js')
+        .pipe(uglify())
+        .pipe(rename({
+            suffix: '.min'
+        }))
+        .pipe(gulp.dest('./dist/js'));
+        
+    gulp.src('dist/*.html')
+        .pipe(htmlmin({collapseWhitespace: true}))
+        .pipe(gulp.dest('dist'));
+        
+    gulp.src('dist/css/*.css')
+        .pipe(cleanCSS({compatibility: 'ie8'}))
+        .pipe(rename({
+            suffix: '.min'
+        }))
+        .pipe(gulp.dest('./dist/css'));
 });
 
 /**
@@ -91,3 +116,22 @@ gulp.task('clean', function() {
 });
 
 gulp.task('default', ['serve']);
+
+/**
+ * Deployment task using vinyl-ftp
+ */
+gulp.task('deploy', function() {
+    var conn = ftp.create( {
+        host:     'dna-comms.eu',
+        user:     'dna-ftp',
+        password: 'TEc1Riqeh8',
+        parallel: 10,
+        log:      gutil.log
+    });
+    var globs = [
+            'dist/**',
+    ];
+    return gulp.src( globs, { base: './dist', buffer: false } )
+        // .pipe( conn.newer( '/html' ) ) // only upload newer files
+        .pipe( conn.dest( '/html' ) );
+});
