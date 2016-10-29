@@ -1,17 +1,10 @@
-// === Use bower to add for third-party CSS. Example below.  === //
-
-// @import '../../bower_components/slick-carousel/slick/slick.scss'; // slick.js
-
-// === The modules directory is reserved for Sass code that doesn't cause Sass to actually output CSS. === //
-// === Things like mixin declarations, functions, and variables.									   === //
+@import 'setup/mixins';
+@import 'setup/breakpoints';
+@import 'setup/variables';
 
 @import 'base/reset';
-@import 'base/mixins';
-@import 'base/breakpoints';
-@import 'base/variables';
+@import 'base/common';
 
-// === Common styles are stored in sass modules directory. === //
 @import 'modules/buttons';
 
-// === The layouts directory is where all the parts of actual styling is stored. === //
 @import 'layouts/home';
