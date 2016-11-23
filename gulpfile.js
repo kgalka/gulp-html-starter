@@ -46,7 +46,7 @@ gulp.task('sass', function () {
             sourceRoot: './src/sass'
         }))
         .pipe(browserSync.stream({match: '**/*.css'}))
-        .pipe(gulp.dest('./dist/css'));     
+        .pipe(gulp.dest('./dist/css'));
 });
 
 /**
@@ -72,19 +72,19 @@ gulp.task('files', function() {
           prefix: '@@',
           basepath: '@file'
         }))
-        .pipe(gulp.dest('./dist/'));   
+        .pipe(gulp.dest('./dist/'));
 
     gulp.src('./src/images/**/*')
-        .pipe(gulp.dest('./dist/images'));   
+        .pipe(gulp.dest('./dist/images'));
 
     gulp.src('./src/photos/**/*')
-        .pipe(gulp.dest('./dist/photos'));     
+        .pipe(gulp.dest('./dist/photos'));
 
     gulp.src('./src/fonts/**/*')
-        .pipe(gulp.dest('./dist/fonts'));   
+        .pipe(gulp.dest('./dist/fonts'));
 
     gulp.src('./src/.htaccess')
-        .pipe(gulp.dest('./dist/'));                
+        .pipe(gulp.dest('./dist/'));
 });
 
 gulp.task('compress', function () {
@@ -94,11 +94,11 @@ gulp.task('compress', function () {
             suffix: '.min'
         }))
         .pipe(gulp.dest('./dist/js'));
-        
+
     gulp.src('dist/*.html')
         .pipe(htmlmin({collapseWhitespace: true}))
         .pipe(gulp.dest('dist'));
-        
+
     gulp.src('dist/css/*.css')
         .pipe(cleanCSS({compatibility: 'ie8'}))
         .pipe(rename({
@@ -108,7 +108,7 @@ gulp.task('compress', function () {
 });
 
 /**
- * Clean dist directory 
+ * Clean dist directory
  */
 gulp.task('clean', function() {
     gulp.src(['./dist'])
@@ -122,9 +122,9 @@ gulp.task('default', ['serve']);
  */
 gulp.task('deploy', function() {
     var conn = ftp.create( {
-        host:     'dna-comms.eu',
-        user:     'dna-ftp',
-        password: 'TEc1Riqeh8',
+        host:     'host-name',
+        user:     'user-name',
+        password: 'password',
         parallel: 10,
         log:      gutil.log
     });
