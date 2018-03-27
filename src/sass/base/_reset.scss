@@ -1,16 +1,59 @@
 * {
 	margin: 0;
 	padding: 0;
+	box-sizing: border-box;
 }
 
 body, html {
 	width: 100%;
 	height: 100%;
+	-webkit-font-smoothing: antialiased;
+	-webkit-tap-highlight-color: transparent;
 }
 
-html {
-	box-sizing: border-box;
+button {
+	background: none;
+	border: 0;
+	outline: 0;
 }
-*, *:before, *:after {
-	box-sizing: inherit;
+
+img, iframe {
+	max-width: 100%;
+}
+
+img {
+	display: block;
+	outline: 0;
+	border: 0;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+em, strong {
+	font-style: inherit;
+	font-weight: inherit;
+}
+
+hr {
+	border: 0;
+	outline: 0;
+}
+
+ul, li {
+	list-style: none;
+}
+
+input, textarea {
+	background: none;
+	border: 0;
+	outline: 0;
+	resize: none;
+	border-radius: 0;
+}
+
+h1,h2,h3,h4,h5,h6 {
+	font-weight: normal;
 }

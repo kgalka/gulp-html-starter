@@ -4,7 +4,8 @@
 
 @import 'base/reset';
 @import 'base/common';
+@import 'base/typography';
 
-@import 'modules/buttons';
+@import 'components/buttons';
 
-@import 'layouts/home';
+@import 'layouts/header';

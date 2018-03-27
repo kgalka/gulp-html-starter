@@ -2,9 +2,7 @@
 
 var gulp         = require('gulp'),
     sass         = require('gulp-ruby-sass'),
-    cleanCSS     = require('gulp-clean-css'),
-    htmlmin      = require('gulp-htmlmin'),
-    rename       = require('gulp-rename'),
+    rename       = require("gulp-rename"),
     uglify       = require('gulp-uglify'),
     browserSync  = require('browser-sync').create(),
     sourcemaps   = require('gulp-sourcemaps'),
@@ -13,9 +11,16 @@ var gulp         = require('gulp'),
     include      = require('gulp-include'),
     fileinclude  = require('gulp-file-include'),
     gutil        = require('gulp-util'),
+    cleanCSS     = require('gulp-clean-css'),
     ftp          = require('vinyl-ftp');
+
 /**
- * Static Server + watching scss/html files
+ * Default task - 'gulp' command
+ */
+gulp.task('default', ['serve']);
+
+/**
+ * Static Server + watching source files
  */
 gulp.task('serve', ['files', 'sass', 'scripts'], function() {
     browserSync.init({
@@ -24,9 +29,13 @@ gulp.task('serve', ['files', 'sass', 'scripts'], function() {
         }
     });
     gulp.watch("./src/sass/**/*", ['sass']);
-    gulp.watch(['./images/*', './photos/*', './fonts/*', './src/*.html', './src/partials/*.html'], ['files']);
+    gulp.watch(['./src/images/*', './src/*.html'], ['files']);
     gulp.watch('./src/js/*', ['scripts']);
-    gulp.watch(['dist/*.html', 'dist/js/*.js']).on('change', browserSync.reload);
+    gulp.watch(['dist/*.html', 'dist/js/*.js']).on('change', function () {
+        setTimeout(function () {
+            browserSync.reload();
+        }, 100);
+    });
 });
 
 /**
@@ -37,16 +46,17 @@ gulp.task('sass', function () {
         .on('error', function (err) {
             console.error('Error!', err.message);
         })
+        .pipe(sourcemaps.init())
         .pipe(autoprefixer({
-            // browsers: ['last 2 versions'],
+            browsers: ['last 4 versions'],
             cascade: false
         }))
         .pipe(sourcemaps.write('./', {
             includeContent: false,
             sourceRoot: './src/sass'
         }))
-        .pipe(browserSync.stream({match: '**/*.css'}))
-        .pipe(gulp.dest('./dist/css'));
+        .pipe(gulp.dest('./dist/css'))
+        .pipe(browserSync.stream({match: '**/*.css'}));
 });
 
 /**
@@ -73,38 +83,27 @@ gulp.task('files', function() {
           basepath: '@file'
         }))
         .pipe(gulp.dest('./dist/'));
-
     gulp.src('./src/images/**/*')
         .pipe(gulp.dest('./dist/images'));
-
-    gulp.src('./src/photos/**/*')
-        .pipe(gulp.dest('./dist/photos'));
-
-    gulp.src('./src/fonts/**/*')
-        .pipe(gulp.dest('./dist/fonts'));
-
-    gulp.src('./src/.htaccess')
-        .pipe(gulp.dest('./dist/'));
+    gulp.src('./src/js/**/*')
+        .pipe(gulp.dest('./dist/js'));
 });
 
 gulp.task('compress', function () {
-    gulp.src('dist/js/*.js')
+    gulp.src('./dist/js/main.js')
         .pipe(uglify())
         .pipe(rename({
             suffix: '.min'
         }))
-        .pipe(gulp.dest('./dist/js'));
+        .pipe(gulp.dest('./dist/js'))
 
-    gulp.src('dist/*.html')
-        .pipe(htmlmin({collapseWhitespace: true}))
-        .pipe(gulp.dest('dist'));
-
-    gulp.src('dist/css/*.css')
+    gulp.src('./dist/css/main.css')
         .pipe(cleanCSS({compatibility: 'ie8'}))
         .pipe(rename({
             suffix: '.min'
         }))
         .pipe(gulp.dest('./dist/css'));
+
 });
 
 /**
@@ -115,23 +114,21 @@ gulp.task('clean', function() {
         .pipe(clean({force : true}));
 });
 
-gulp.task('default', ['serve']);
-
 /**
  * Deployment task using vinyl-ftp
  */
 gulp.task('deploy', function() {
     var conn = ftp.create( {
-        host:     'host-name',
-        user:     'user-name',
-        password: 'password',
-        parallel: 10,
+        host:     '',
+        user:     '',
+        password: '',
+        parallel: 1,
         log:      gutil.log
     });
     var globs = [
             'dist/**',
     ];
     return gulp.src( globs, { base: './dist', buffer: false } )
-        // .pipe( conn.newer( '/html' ) ) // only upload newer files
-        .pipe( conn.dest( '/html' ) );
+        // .pipe( conn.newer( '/' ) ) // only upload newer files
+        .pipe( conn.dest( '/' ) );
 });
